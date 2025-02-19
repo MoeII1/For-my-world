@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Love Maze</title>
+    <style>
+        body {
+            text-align: center;
+            background-color: pink;
+            font-family: Arial, sans-serif;
+        }
+        .heart {
+            font-size: 50px;
+            cursor: pointer;
+            transition: transform 0.5s;
+        }
+        .heart:hover {
+            transform: scale(1.2);
+        }
+        .message, .maze, .win-screen {
+            display: none;
+        }
+        .maze {
+            width: 300px;
+            height: 300px;
+            margin: 20px auto;
+            border: 5px solid black;
+            position: relative;
+        }
+        .player {
+            width: 20px;
+            height: 20px;
+            background-color: red;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+        .exit {
+            width: 20px;
+            height: 20px;
+            background-color: green;
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="heart" onclick="showMessage()">❤️</div>
+    <div class="message">
+        <h2>I love you Dell</h2>
+        <button onclick="startMaze()">Go Through</button>
+    </div>
+    <div class="maze">
+        <div class="player"></div>
+        <div class="exit"></div>
+    </div>
+    <div class="win-screen">
+        <h2>See, even here you've won. My girl is ALWAYS a winner ❤️</h2>
+    </div>
+    <script>
+        function showMessage() {
+            document.querySelector('.heart').style.display = 'none';
+            document.querySelector('.message').style.display = 'block';
+        }
+        function startMaze() {
+            document.querySelector('.message').style.display = 'none';
+            document.querySelector('.maze').style.display = 'block';
+        }
+        document.addEventListener('keydown', function(event) {
+            let player = document.querySelector('.player');
+            let step = 10;
+            let rect = player.getBoundingClientRect();
+            let maze = document.querySelector('.maze').getBoundingClientRect();
+            if (event.key === 'ArrowUp' && rect.top > maze.top) player.style.top = (rect.top - step) + 'px';
+            if (event.key === 'ArrowDown' && rect.bottom < maze.bottom) player.style.top = (rect.top + step) + 'px';
+            if (event.key === 'ArrowLeft' && rect.left > maze.left) player.style.left = (rect.left - step) + 'px';
+            if (event.key === 'ArrowRight' && rect.right < maze.right) player.style.left = (rect.left + step) + 'px';
+            checkWin();
+        });
+        function checkWin() {
+            let player = document.querySelector('.player').getBoundingClientRect();
+            let exit = document.querySelector('.exit').getBoundingClientRect();
+            if (player.top < exit.bottom && player.bottom > exit.top && player.left < exit.right && player.right > exit.left) {
+                document.querySelector('.maze').style.display = 'none';
+                document.querySelector('.win-screen').style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>
